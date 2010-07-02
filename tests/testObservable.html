@@ -1,0 +1,86 @@
+<html>
+ <head>
+  <title>Test Page for Observable</title>
+  <script src="../vendor/jsunit/app/jsUnitCore.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../vendor/prototype/dist/prototype.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../vendor/low-pro/dist/lowpro.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script src="../src/observable.js" type="text/javascript" charset="utf-8"></script>
+ </head>
+ <body>
+  <script language="javascript">
+		var User = Class.create(Observable, {
+			initialize: function($super, username) {
+				$super();
+				this.defineProperty('username');
+				this.defineProperty('password');
+				
+//				this.defineArrayProperty('friends');
+				this.username = username;
+			},
+			getUsername: function()
+			{
+				return this._get('username')+' yao!';
+			},
+			setPassword: function(new_password)
+			{
+				//Hash the password using an awesome hashing function
+				var hash = 0;
+				for (var i = new_password.length - 1; i >= 0; i--){
+					hash += new_password.charCodeAt(i);
+				};
+				
+				this._set('password', hash);
+			}
+		});
+
+		var Observer = Class.create({
+			initialize: function() 
+			{
+				this.reset();
+			},
+			observeValueForKeyPathOfObject: function(key_path, object, options, context)
+			{
+				this.last_observed_key_path = key_path;
+				this.last_observed_object = object;
+			},
+			reset: function ()
+			{
+				this.last_observed_key_path = null;
+				this.last_observed_object = null;
+			}
+		});
+
+    function testProperties() {
+			var user = new User('magnus');
+			assertEquals(user._get('username'), 'magnus');
+			assertEquals(user.username, 'magnus yao!');
+			user.username = 'mignis';
+			assertEquals(user.username, 'mignis yao!');
+			
+			user.password = 'qwerty';
+			assertEquals(user.password, 684);
+    }
+
+		function testObservations () {
+			var user = new User('magnus');
+			var observer = new Observer();
+			
+			user.addObserverForKeyPath(observer, 'username');
+			user.addObserverForKeyPath(observer, 'password');
+			
+			user.username = 'foo';
+			assertEquals(observer.last_observed_object, user);
+			assertEquals(observer.last_observed_key_path, 'username');
+			observer.reset();
+			
+			user.password = 'bar';
+			assertEquals(observer.last_observed_object, user);
+			assertEquals(observer.last_observed_key_path, 'password');
+		}
+
+		testProperties();
+		testObservations();
+  </script>
+ </body>
+</html>
