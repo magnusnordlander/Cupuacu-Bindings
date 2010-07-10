@@ -26,6 +26,10 @@ var Observable = Class.create(
       {
         return this[camelize('get_'+propertyName)]();
       }
+      else if (propertyName.substr(0, 3) == 'is_' && this[camelize(propertyName)] != undefined)
+      {
+        return this[camelize(propertyName)]();
+      }
       else
       {
         return this._get(propertyName);
@@ -266,13 +270,10 @@ var ObserverWrapper = Class.create(
     this.key_path = key_path;
     this.options = options;
     this.context = context;
-//    this.custom_function = custom_function;
     
-    this.current_observation = null;
-    
-    if (this.options == undefined)
+    if (options == undefined)
     {
-      this.options = {};
+      this.options = [];
     }
   },
   equalTo: function(observer_wrapper)
@@ -281,7 +282,6 @@ var ObserverWrapper = Class.create(
     if (this.key_path != observer_wrapper.key_path) return false;
     if (this.options != observer_wrapper.options) return false;
     if (this.context != observer_wrapper.context) return false;
-//    if (this.custom_function != observer_wrapper.custom_function) return false;
     
     return true;
   }

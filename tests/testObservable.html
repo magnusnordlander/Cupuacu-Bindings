@@ -17,6 +17,7 @@
         $super();
         this.defineProperty('username');
         this.defineProperty('password');
+        this.defineProperty('is_admin');
         
         this.defineProperty('computer');
         
@@ -36,6 +37,10 @@
         };
         
         this._set('password', hash);
+      },
+      isAdmin: function()
+      {
+        return !this._get('is_admin');
       }
     });
 
@@ -72,10 +77,10 @@
       },
       isEmpty: function()
       {
-        return (this.last_observed_key_paths == [] &&
-                this.last_observed_objects == [] &&
-                this.last_observed_changes == [] &&
-                this.last_observed_contexts == [] &&);
+        return (this.last_observed_key_paths.length == 0 &&
+                this.last_observed_objects.length == 0 &&
+                this.last_observed_changes.length == 0 &&
+                this.last_observed_contexts.length == 0);
       }
     });
 
@@ -86,6 +91,9 @@
       assertEquals(user.username, 'magnus yao!');
       user.username = 'mignis';
       assertEquals(user.username, 'mignis yao!');
+      
+      user.is_admin = true;
+      assertFalse(user.is_admin);
       
       user.password = 'qwerty';
       assertEquals(user.password, 684);
@@ -120,6 +128,8 @@
       var observer_2 = new Observer();
       
       user.addObserverForKeyPath(observer, 'username', ['new', 'initial'], {test: 'foo'});
+      user.addObserverForKeyPath(observer_2, 'username');
+
       assertEquals(observer.last_observed_objects[0], user);
       assertEquals(observer.last_observed_key_paths[0], 'username');
       assertEquals(observer.last_observed_changes[0].kind, 'setting')
@@ -128,6 +138,8 @@
       assertEquals(observer.last_observed_changes[0].old, undefined);
       assertEquals(observer.last_observed_contexts[0].test, 'foo');
       observer.reset();
+
+      assertTrue(observer_2.isEmpty());
       
       user.username = 'foo';
       assertEquals(observer.last_observed_objects[0], user);
@@ -138,6 +150,15 @@
       assertEquals(observer.last_observed_changes[0].old, undefined);
       assertEquals(observer.last_observed_contexts[0].test, 'foo');
       observer.reset();
+      
+      assertEquals(observer_2.last_observed_objects[0], user);
+      assertEquals(observer_2.last_observed_key_paths[0], 'username');
+      assertEquals(observer_2.last_observed_changes[0].kind, 'setting')
+      assertFalse(observer_2.last_observed_changes[0].notification_is_prior);
+      assertEquals(observer_2.last_observed_changes[0]['new'], undefined);
+      assertEquals(observer_2.last_observed_changes[0].old, undefined);
+      assertEquals(observer_2.last_observed_contexts[0], undefined);
+      observer_2.reset();
       
       user.addObserverForKeyPath(observer, 'password', ['new', 'old', 'prior']);
 
