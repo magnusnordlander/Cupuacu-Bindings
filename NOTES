@@ -27,10 +27,10 @@ cb:alias för att låta current heta något annat, för att undvika shadowing
 
 <cb:template cb:editor-alternate="address_editor">
 <li>
-	<input placeholder="Adress" cb:bind-to="current" cb:key-path="address_1" /><br />
-	<input placeholder="Postnummer" cb:bind-to="current" cb:key-path="postal_code" /><br />
-	<input placeholder="Stad" cb:bind-to="current" cb:key-path="city" /><br />
-	<input type="button" value="Klar" cb:bind-to="current" cb:action="unedit" cb:key-path="self" />
+  <input placeholder="Adress" cb:bind-to="current" cb:key-path="address_1" /><br />
+  <input placeholder="Postnummer" cb:bind-to="current" cb:key-path="postal_code" /><br />
+  <input placeholder="Stad" cb:bind-to="current" cb:key-path="city" /><br />
+  <input type="button" value="Klar" cb:bind-to="current" cb:action="unedit" cb:key-path="self" />
 </li>
 </cb:template>
 
@@ -38,10 +38,10 @@ cb:alias för att låta current heta något annat, för att undvika shadowing
 
 <h2>Addresses:</h2>
 <ul>
-	<cb:collection cb:bind-to="person" cb:key-path="addresses" cb:editor-alternate="address_editor">
-		<li><span cb:bind-to="current" cb:key-path="address_1" />, <span cb:bind-to="current" cb:key-path="postal_code" /> <span cb:bind-to="current" cb:key-path="city" /> <a href="#" cb:bind-to="current" cb:key-path="self" cb:action="edit">[redigera]</a></li> <!-- Dessa blir bundna till ex.vis. person.addresses[n].address_1 -->
-	</cb:collection>
-	<input type="button" value="Lägg till ny" cb:bind-to="person" cb:key-path="addresses" cb:action="add" />
+  <cb:collection cb:bind-to="person" cb:key-path="addresses" cb:editor-alternate="address_editor">
+    <li><span cb:bind-to="current" cb:key-path="address_1" />, <span cb:bind-to="current" cb:key-path="postal_code" /> <span cb:bind-to="current" cb:key-path="city" /> <a href="#" cb:bind-to="current" cb:key-path="self" cb:action="edit">[redigera]</a></li> <!-- Dessa blir bundna till ex.vis. person.addresses[n].address_1 -->
+  </cb:collection>
+  <input type="button" value="Lägg till ny" cb:bind-to="person" cb:key-path="addresses" cb:action="add" />
 </ul>
 
 <h3>Adressredigerare</h3>

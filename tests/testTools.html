@@ -2,29 +2,29 @@
  <head>
   <title>Test Page for Tools</title>
   <script src="../vendor/jsunit/app/jsUnitCore.js" type="text/javascript" charset="utf-8"></script>
-	<script src="../vendor/prototype/dist/prototype.js" type="text/javascript" charset="utf-8"></script>
-	<script src="../vendor/low-pro/dist/lowpro.js" type="text/javascript" charset="utf-8"></script>
-	
-	<script src="../src/tools.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../vendor/prototype/dist/prototype.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../vendor/low-pro/dist/lowpro.js" type="text/javascript" charset="utf-8"></script>
+  
+  <script src="../src/tools.js" type="text/javascript" charset="utf-8"></script>
  </head>
  <body>
   <script language="javascript">
-		function testArrayTools () {
-			var obj = {test: true};
-			var an_array = ['hello', obj, 12, true];
-			
-			assertTrue(an_array.has('hello'));
-			assertFalse(an_array.has('test'));
-			assertTrue(an_array.has(obj));
-			assertFalse(an_array.has({test: true}));
-			assertFalse(an_array.has({test: true, other_stuff: false}));
-			assertTrue(an_array.has(12));
-			assertFalse(an_array.has(13));
-			assertTrue(an_array.has(true));
-			assertFalse(an_array.has(false));
-		}
+    function testArrayTools () {
+      var obj = {test: true};
+      var an_array = ['hello', obj, 12, true];
+      
+      assertTrue(an_array.has('hello'));
+      assertFalse(an_array.has('test'));
+      assertTrue(an_array.has(obj));
+      assertFalse(an_array.has({test: true}));
+      assertFalse(an_array.has({test: true, other_stuff: false}));
+      assertTrue(an_array.has(12));
+      assertFalse(an_array.has(13));
+      assertTrue(an_array.has(true));
+      assertFalse(an_array.has(false));
+    }
 
-		testArrayTools();
+    testArrayTools();
   </script>
  </body>
 </html>
