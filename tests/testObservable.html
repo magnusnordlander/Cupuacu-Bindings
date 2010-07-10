@@ -10,8 +10,10 @@
  </head>
  <body>
   <script language="javascript">
-    var User = Class.create(Observable, {
-      initialize: function($super, username) {
+    var User = Class.create(Observable, 
+    {
+      initialize: function($super, username) 
+      {
         $super();
         this.defineProperty('username');
         this.defineProperty('password');
@@ -37,7 +39,8 @@
       }
     });
 
-    var Computer = Class.create(Observable, {
+    var Computer = Class.create(Observable, 
+    {
       initialize: function($super)
       {
         $super();
@@ -47,7 +50,8 @@
       }
     });
 
-    var Observer = Class.create({
+    var Observer = Class.create(
+    {
       initialize: function() 
       {
         this.reset();
@@ -75,7 +79,8 @@
       }
     });
 
-    function testProperties() {
+    function testProperties() 
+    {
       var user = new User('magnus');
       assertEquals(user._get('username'), 'magnus');
       assertEquals(user.username, 'magnus yao!');
@@ -86,7 +91,8 @@
       assertEquals(user.password, 684);
     }
 
-    function testKeyValueCoding () {
+    function testKeyValueCoding () 
+    {
       var user = new User('magnus');
       var imac = new Computer();
       imac.maker = 'Apple inc.';
@@ -105,7 +111,8 @@
       
     }
 
-    function testNonRelationalObservations () {
+    function testNonRelationalObservations () 
+    {
       var user = new User('magnus');
       user.password = 'qwerty';
       

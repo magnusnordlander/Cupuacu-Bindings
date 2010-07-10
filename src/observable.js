@@ -2,7 +2,8 @@ function camelize (string) {
   return string.replace(/\_(.)/g, function(m, l){return l.toUpperCase()});
 }
 
-var Observable = Class.create({
+var Observable = Class.create(
+{
   // --------------------- Basics -----------------------
   initialize: function()
   {
@@ -257,8 +258,10 @@ var Observable = Class.create({
   }
 });
 
-var ObserverWrapper = Class.create({
-  initialize: function(observer, key_path, options, context) {
+var ObserverWrapper = Class.create(
+{
+  initialize: function(observer, key_path, options, context) 
+  {
     this.observer = observer;
     this.key_path = key_path;
     this.options = options;
@@ -284,24 +287,32 @@ var ObserverWrapper = Class.create({
   }
 });
 
-var Observation = Class.create({
-  initialize: function(observer_wrapper) {
+var Observation = Class.create(
+{
+  initialize: function(observer_wrapper) 
+  {
     this.observer = observer_wrapper.observer;
     this.key_path = observer_wrapper.key_path;
     this.context = observer_wrapper.context;
     this.options = observer_wrapper.options;
     this.change = {};
   },
-  send: function(sender) {
-    this.observer.observeValueForKeyPathOfObject(this.key_path, sender, Object.clone(this.change), this.context);
+  send: function(sender) 
+  {
+    this.observer.observeValueForKeyPathOfObject(this.key_path, 
+                                                 sender, 
+                                                 Object.clone(this.change), 
+                                                 this.context);
   }
 });
 
 var KeyPathParser = Class.create({
-  initialize: function(key_path) {
+  initialize: function(key_path) 
+  {
     this.key_path_array = key_path.split('.');
   },
-  shift: function() {
+  shift: function() 
+  {
     return this.key_path_array.shift();
   },
   rest: function()

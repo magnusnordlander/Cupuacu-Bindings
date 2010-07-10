@@ -1,0 +1,152 @@
+# Cupuaçu Bindings
+
+## Building
+
+## Coding standards
+
+### General
+
+#### Indention
+
+2 spaces. No tabs.
+
+#### Max line length
+
+Soft limit of 80 characters. Hard limit of 120 characters.
+
+#### Line termination
+
+UNIX style LF, 0x0A.
+
+#### Charset
+
+UTF-8
+
+### Naming standards
+
+#### Classes
+
+Classes are prefixed with cb, followed by the CamelCased class name. Underscores are not permitted.
+
+#### File names
+
+Strive for same as class, but up to the discretion of the programmer. Multiple classes in same file are allowed as long as they are logically grouped, and only used from within the same file. Suffixed with .js
+
+#### Methods and functions
+
+Named using camelCase. Underscores are not permitted. Accessors are always prefixed with get, set or is. Verbosity is encouraged.
+
+Floating functions are discouraged.
+
+#### Properties
+
+Properties must be in lowercase and underscores are used to separate words. Please note that getters  and setters are still camelCased.
+
+#### Variables
+
+Variables must be in lowercase and underscores are used to separate words.
+
+### Coding style
+
+#### Strings
+
+Literal strings are demarcated using single quotes, unless the strings themselves contain single quoutes, in which case double quoted strings are allowed.
+
+Multiline strings are formatted as follows:
+
+    var multiline_string = 'This is a long multiline string. \n'+
+                           'It can get even longer than this. \n'+
+                           'The last line may or may not use a newline.';
+
+#### Arrays
+
+Arrays are declared using the [] operator. Long arrays are intented as follows:
+
+    var array = ['foo', 'bar', 'quux', ['small', 'nested', 'array']
+                 'baz', true, 'some other long string or something', 12,
+                 ['a', 'quite', 'larger',
+                  'nested', 'array'],
+                 some_object];
+
+#### Hashes
+
+Hashes are declared using the {} operator. Access is permitted using either the [] operator or dot notation. Keys must be in lowercase and underscores are used to separate words. Long hashes are indented as follows:
+
+    var hash = {
+                 some_key: 'some value',
+                 some_other_key: foo,
+                 short_nested_hash: {key: 'value'}
+                 long_nested_hash: {
+                                     some_nested_key: 'value',
+                                     other_nested_key: 'value'
+                                   }
+               };
+
+#### Classes and methods
+
+Classes are **always** created using Class.create(). Documentation is written using a docblock. Indentation is as follows:
+
+    /**
+     * DocBlock comment
+     */
+    var TheClass = Class.create(SuperClass,
+    {
+      /**
+       * DocBlock comment
+       */
+      initialize: function(arg) 
+      {
+        // Code
+      },
+      
+      /**
+       * DocBlock comment
+       */
+      someOtherMethod: function()
+      {
+        // Code
+      }
+    });
+
+#### Flow control
+
+If statements are formatted as follows:
+
+    if (some_boolean)
+    {
+      // Code
+    }
+    else if (some_other_boolean)
+    {
+      // Code
+    }
+    else if (some_condition && some_other_condition)
+    {
+      // Code
+    }
+    else
+    {
+      // Code
+    }
+    
+Switch statements are discouraged, as they are usually signs that you should instead be using polymorphism, however, when used they are formatted as follows:
+
+    switch (some_var)
+    {
+      case 'a':
+        // Code
+      break;
+      
+      case 'b':
+        // Code
+      break;
+      
+      case 'c':
+      case 'd':
+        // Code
+      break;
+      
+      default:
+        // Code
+      break;
+    }

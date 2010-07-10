@@ -1,8 +1,11 @@
-var ElementUpdater = Class.create({
-  initialize: function(element) {
+var ElementUpdater = Class.create(
+{
+  initialize: function(element) 
+  {
     this.element = element;
   },
-  update: function(value) {
+  update: function(value) 
+  {
     if (window.console && window.console.error)
     {
       window.console.error("Attempted to use abstract element updater");
@@ -14,14 +17,18 @@ var ElementUpdater = Class.create({
   }
 });
 
-var TextElementUpdater = Class.create(ElementUpdater, {
-  update: function(value) {
+var TextElementUpdater = Class.create(ElementUpdater, 
+{
+  update: function(value) 
+  {
     this.element.update(value);
   }
 });
 
-var FormElementUpdater = Class.create(ElementUpdater, {
-  update: function(value) {
+var FormElementUpdater = Class.create(ElementUpdater, 
+{
+  update: function(value) 
+  {
     this.element.setValue(value);
   }
 });
