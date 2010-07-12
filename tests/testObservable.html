@@ -4,9 +4,10 @@
   <script src="../vendor/jsunit/app/jsUnitCore.js" type="text/javascript" charset="utf-8"></script>
   <script src="../vendor/prototype/dist/prototype.js" type="text/javascript" charset="utf-8"></script>
   <script src="../vendor/low-pro/dist/lowpro.js" type="text/javascript" charset="utf-8"></script>
-  
-  <script src="../src/tools.js" type="text/javascript" charset="utf-8"></script>
-  <script src="../src/observable.js" type="text/javascript" charset="utf-8"></script>
+
+  <script src="../src/cbKeyPathParser.js" type="text/javascript" charset="utf-8"></script>  
+  <script src="../src/cbArrayExtensions.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../src/cbObservable.js" type="text/javascript" charset="utf-8"></script>
  </head>
  <body>
   <script language="javascript">
@@ -20,8 +21,6 @@
         this.defineProperty('is_admin');
         
         this.defineProperty('computer');
-        
-        this.defineCollectionProperty('friends');
 
         this.username = username;
       },
@@ -117,7 +116,7 @@
       
       assertEquals(user.valueForKey('password'), 684);
       assertEquals(user.valueForKeyPath('computer.model'), 'iMac (Early 2010)');
-      
+      assertEquals(user.valueForKeyPath('self.self.computer.self.model'), 'iMac (Early 2010)');
     }
 
     function testNonRelationalSettingObservations () 

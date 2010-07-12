@@ -1,0 +1,42 @@
+<html>
+ <head>
+  <title>Test Page for Key parser</title>
+  <script src="../vendor/jsunit/app/jsUnitCore.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../vendor/prototype/dist/prototype.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../vendor/low-pro/dist/lowpro.js" type="text/javascript" charset="utf-8"></script>
+  
+  <script src="../src/cbKeyPathParser.js" type="text/javascript" charset="utf-8"></script>
+ </head>
+ <body>
+  <script language="javascript">
+    function testKeyParser() 
+    {
+      var parser = null;
+      
+      parser = new cbKeyPathParser('model');
+      assertEquals(parser.shift(), 'model');
+      assertTrue(parser.isEmpty());
+      
+      parser = new cbKeyPathParser('computer.model.manufacturer');
+      assertEquals(parser.shift(), 'computer');
+      assertFalse(parser.isEmpty());
+      assertEquals(parser.read(), 'model');
+      assertEquals(parser.rest(), 'model.manufacturer');
+      assertEquals(parser.shift(), 'model');
+      assertEquals(parser.rest(), 'manufacturer');
+      assertEquals(parser.shift(), 'manufacturer');
+      assertTrue(parser.isEmpty());
+      
+      parser = new cbKeyPathParser('self.@sum.self.self.square');
+      assertEquals(parser.read(), 'self');
+      parser.clearSelves();
+      assertEquals(parser.shift(), '@sum');
+      assertEquals(parser.read(), 'self');
+      parser.clearSelves();
+      assertEquals(parser.shift(), 'square');
+    }
+    
+    testKeyParser();
+  </script>
+ </body>
+</html>

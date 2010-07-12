@@ -1,0 +1,74 @@
+<html>
+ <head>
+  <title>Test Page for Tools</title>
+  <script src="../vendor/jsunit/app/jsUnitCore.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../vendor/prototype/dist/prototype.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../vendor/low-pro/dist/lowpro.js" type="text/javascript" charset="utf-8"></script>
+  
+  <script src="../src/cbKeyPathParser.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../src/cbArrayExtensions.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../src/cbObservable.js" type="text/javascript" charset="utf-8"></script>
+ </head>
+ <body>
+  <script language="javascript">
+    var Square = Class.create(cbObservable, 
+    {
+      initialize: function($super, root)
+      {
+        $super();
+        
+        this.defineProperty('root');
+        this.root = root;
+        
+        this.__defineGetter__('square', this.getSquare);
+      },
+      
+      getSquare: function()
+      {
+        return this.root*this.root;
+      }
+    });
+  
+    function testMiscTools() 
+    {
+      var obj = {test: true};
+      var an_array = ['hello', obj, 12, true];
+      
+      assertTrue(an_array.has('hello'));
+      assertFalse(an_array.has('test'));
+      assertTrue(an_array.has(obj));
+      assertFalse(an_array.has({test: true}));
+      assertFalse(an_array.has({test: true, other_stuff: false}));
+      assertTrue(an_array.has(12));
+      assertFalse(an_array.has(13));
+      assertTrue(an_array.has(true));
+      assertFalse(an_array.has(false));
+    }
+    
+    function testKVC() 
+    {
+      var products = ['iMac', 'iPhone', 'Mac Mini', 'Mac Pro', 'MacBook', 'MacBook Pro', 'iPad'];
+
+      var primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41];
+      
+      var squares = [new Square(1), new Square(2), new Square(3), new Square(4)];
+      
+      assertEquals(products.valueForKey('@count'), 7);
+      assertRoughlyEquals(primes.valueForKey('@avg'), 238/13, 0.1);
+      assertEquals(primes.valueForKey('@max'), 41);
+      assertEquals(primes.valueForKey('@min'), 2);
+      assertEquals(primes.valueForKey('@sum'), 238);
+      
+      assertEquals(squares.valueForKeyPath('@sum.square'), 30);
+      assertRoughlyEquals(squares.valueForKeyPath('@avg.square'), 30/4, 0.1);
+      assertEquals(squares.valueForKeyPath('@max.square'), 16);
+      assertEquals(squares.valueForKeyPath('@min.square'), 1);
+      
+      assertEquals(squares.valueForKeyPath('self.self.@max.self.self.square'), 16);
+    }
+
+    testMiscTools();
+    testKVC();
+  </script>
+ </body>
+</html>
