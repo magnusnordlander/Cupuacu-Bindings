@@ -10,7 +10,7 @@
  </head>
  <body>
   <script language="javascript">
-    var User = Class.create(Observable, 
+    var User = Class.create(cbObservable, 
     {
       initialize: function($super, username) 
       {
@@ -21,7 +21,8 @@
         
         this.defineProperty('computer');
         
-//        this.defineArrayProperty('friends');
+        this.defineCollectionProperty('friends');
+
         this.username = username;
       },
       getUsername: function()
@@ -44,7 +45,7 @@
       }
     });
 
-    var Computer = Class.create(Observable, 
+    var Computer = Class.create(cbObservable, 
     {
       initialize: function($super)
       {
@@ -119,7 +120,7 @@
       
     }
 
-    function testNonRelationalObservations () 
+    function testNonRelationalSettingObservations () 
     {
       var user = new User('magnus');
       user.password = 'qwerty';
@@ -192,9 +193,25 @@
       user.computer = imac; */
       
     }
+    
+    function testNonRelationalArrayObservations () 
+    {
+      var user = new User('magnus');
+
+      var friend_1 = new User('Friend 1');
+      var friend_2 = new User('Friend 2');
+      var friend_3 = new User('Friend 3');
+      
+      user.friends.push(friend_1);
+      
+      var observer = new Observer();
+      
+      
+    }
+    
 
     testProperties();
-    testNonRelationalObservations();
+    testNonRelationalSettingObservations();
     testKeyValueCoding();
   </script>
  </body>

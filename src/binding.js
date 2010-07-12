@@ -1,4 +1,4 @@
-var Binding = Behavior.create(
+var cbBinding = Behavior.create(
 {
   initialize : function() 
   {

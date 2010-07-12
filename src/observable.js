@@ -2,7 +2,7 @@ function camelize (string) {
   return string.replace(/\_(.)/g, function(m, l){return l.toUpperCase()});
 }
 
-var Observable = Class.create(
+var cbObservable = Class.create(
 {
   // --------------------- Basics -----------------------
   initialize: function()
@@ -76,7 +76,7 @@ var Observable = Class.create(
   
   valueForKeyPath: function(key_path)
   {
-    var parser = new KeyPathParser(key_path);
+    var parser = new cbKeyPathParser(key_path);
     var key = parser.shift();
     
     if (parser.isEmpty())
@@ -96,7 +96,7 @@ var Observable = Class.create(
   
   setValueForKeyPath: function(key_path, value)
   {
-    var parser = new KeyPathParser(key_path);
+    var parser = new cbKeyPathParser(key_path);
     var key = parser.shift();
     
     if (parser.isEmpty())
@@ -115,7 +115,7 @@ var Observable = Class.create(
   {
     var observable = this;
     this._observers[key].each(function(observer_wrapper) {
-      var observation = new Observation(observer_wrapper);
+      var observation = new cbObservation(observer_wrapper);
       var options = $A(observation.options);
       
       observation.change.kind = 'setting';
@@ -178,12 +178,12 @@ var Observable = Class.create(
   
   addObserverForKeyPath: function(observer, key_path, options, context)
   {  
-    this.addObserverWrapper(new ObserverWrapper(observer, key_path, options, context));
+    this.addObserverWrapper(new cbObserverWrapper(observer, key_path, options, context));
   },
   
   addObserverWrapper: function(observer_wrapper)
   {  
-    var parser = new KeyPathParser(observer_wrapper.key_path);
+    var parser = new cbKeyPathParser(observer_wrapper.key_path);
     var key = parser.shift();
     
     if (parser.isEmpty())
@@ -192,7 +192,7 @@ var Observable = Class.create(
       
       if ($A(observer_wrapper.options).has('initial'))
       {
-        var observation = new Observation(observer_wrapper);
+        var observation = new cbObservation(observer_wrapper);
 
         observation.change.kind = 'setting';
         observation.change.old = undefined;
@@ -262,7 +262,7 @@ var Observable = Class.create(
   }
 });
 
-var ObserverWrapper = Class.create(
+var cbObserverWrapper = Class.create(
 {
   initialize: function(observer, key_path, options, context) 
   {
@@ -287,7 +287,7 @@ var ObserverWrapper = Class.create(
   }
 });
 
-var Observation = Class.create(
+var cbObservation = Class.create(
 {
   initialize: function(observer_wrapper) 
   {
@@ -306,7 +306,7 @@ var Observation = Class.create(
   }
 });
 
-var KeyPathParser = Class.create({
+var cbKeyPathParser = Class.create({
   initialize: function(key_path) 
   {
     this.key_path_array = key_path.split('.');

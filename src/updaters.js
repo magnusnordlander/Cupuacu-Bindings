@@ -1,4 +1,4 @@
-var ElementUpdater = Class.create(
+var cbElementUpdater = Class.create(
 {
   initialize: function(element) 
   {
@@ -17,7 +17,7 @@ var ElementUpdater = Class.create(
   }
 });
 
-var TextElementUpdater = Class.create(ElementUpdater, 
+var cbTextElementUpdater = Class.create(ElementUpdater, 
 {
   update: function(value) 
   {
@@ -25,7 +25,7 @@ var TextElementUpdater = Class.create(ElementUpdater,
   }
 });
 
-var FormElementUpdater = Class.create(ElementUpdater, 
+var cbFormElementUpdater = Class.create(ElementUpdater, 
 {
   update: function(value) 
   {
