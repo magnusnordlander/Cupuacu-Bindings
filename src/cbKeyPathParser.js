@@ -15,19 +15,19 @@ var cbKeyPathParser = Class.create({
   {
     return (this.key_path_array.length == 0);
   },
-	read: function()
-	{
-		if (this.isEmpty())
-		{
-			return undefined;
-		}
-		return this.key_path_array[0];
-	},
-	clearSelves: function()
-	{
-		while (!this.isEmpty() && this.read() == 'self')
-		{
-			this.shift();
-		}
-	}
+  read: function()
+  {
+    if (this.isEmpty())
+    {
+      return undefined;
+    }
+    return this.key_path_array[0];
+  },
+  clearSelves: function()
+  {
+    while (!this.isEmpty() && this.read() == 'self')
+    {
+      this.shift();
+    }
+  }
 });

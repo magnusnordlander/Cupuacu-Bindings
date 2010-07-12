@@ -79,10 +79,10 @@ var cbObservable = Class.create(
     var parser = new cbKeyPathParser(key_path);
     var key = parser.shift();
 
-		if (key == 'self')
-		{
-			return this.valueForKeyPath(parser.rest());
-		}
+    if (key == 'self')
+    {
+      return this.valueForKeyPath(parser.rest());
+    }
     
     if (parser.isEmpty())
     {
