@@ -21,6 +21,8 @@
         this.defineProperty('is_admin');
         
         this.defineProperty('computer');
+        
+        this.defineArrayProperty('friends');
 
         this.username = username;
       },
@@ -117,6 +119,26 @@
       assertEquals(user.valueForKey('password'), 684);
       assertEquals(user.valueForKeyPath('computer.model'), 'iMac (Early 2010)');
       assertEquals(user.valueForKeyPath('self.self.computer.self.model'), 'iMac (Early 2010)');
+      
+      var friend_1 = new User('Friend 1');
+      var friend_2 = new User('Friend 2');
+      var friend_3 = new User('Friend 3');
+      
+      user.insertObjectInFriendsAtIndex(friend_1, 0);
+      user.insertFriendsAtIndexes([friend_2, friend_3], [1, 2]);
+      
+      assertEquals(user.countOfFriends(), 3);
+      assertEquals(user.objectInFriendsAtIndex(0), friend_1);
+      assertArrayEquals(user.friendsAtIndexes([1,2]), [friend_2, friend_3]);
+      
+      user.removeObjectFromFriendsAtIndex(0);
+      assertEquals(user.countOfFriends(), 2);
+      user.removeFriendsAtIndexes([0, 1]);
+      assertEquals(user.countOfFriends(), 0);
+      
+      user.addFriends([friend_2, friend_3]);
+      assertEquals(user.objectInFriendsAtIndex(0), friend_2);
+      assertEquals(user.objectInFriendsAtIndex(1), friend_3);
     }
 
     function testNonRelationalSettingObservations () 

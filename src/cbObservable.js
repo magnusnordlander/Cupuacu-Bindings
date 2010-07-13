@@ -4,10 +4,11 @@ function camelize (string) {
 
 var cbObservable = Class.create(
 {
-  // --------------------- Basics -----------------------
   initialize: function()
   {
     this._properties = {};
+    
+    this._arrays = {};
     
     this._observers = {};
     
@@ -15,7 +16,8 @@ var cbObservable = Class.create(
     
     this._current_change_observations = {};
   },
-  
+
+  // --------------------- Properties -----------------------
   defineProperty: function(propertyName) 
   {
     this._observers[propertyName] = [];
@@ -49,6 +51,57 @@ var cbObservable = Class.create(
     });
   },
   
+  defineArrayProperty: function(propertyName) 
+  {
+    this._arrays[propertyName] = [];
+    
+    this.__defineGetter__(propertyName, function () 
+    {
+      return this._getArray(propertyName);
+    });
+    
+    this[camelize('object_in_'+propertyName+'_at_index')] = function(index) 
+    {
+      var objects = this.getObjectsAtIndexes(propertyName, [index]);
+      return objects[0];
+    };
+    
+    this[camelize(propertyName+'_at_indexes')] = function(indexes) 
+    {
+      return this.getObjectsAtIndexes(propertyName, indexes);
+    };
+    
+    this[camelize('insert_object_in_'+propertyName+'_at_index')] = function(object, index) 
+    {
+      return this.insertObjectsAtIndexes(propertyName, [object], [index]);
+    };
+    
+    this[camelize('insert_'+propertyName+'_at_indexes')] = function(objects, indexes) 
+    {
+      return this.insertObjectsAtIndexes(propertyName, objects, indexes);
+    };
+    
+    this[camelize('add_'+propertyName)] = function(objects) 
+    {
+      return this.insertObjects(propertyName, objects);
+    };
+    
+    this[camelize('remove_object_from_'+propertyName+'_at_index')] = function(index) 
+    {
+      return this.removeObjectsAtIndexes(propertyName, [index]);
+    };
+    
+    this[camelize('remove_'+propertyName+'_at_indexes')] = function(indexes) 
+    {
+      return this.removeObjectsAtIndexes(propertyName, indexes);
+    };
+    
+    this[camelize('count_of_'+propertyName)] = function() 
+    {
+      return this.countObjects(propertyName);
+    };
+  },
+  
   _get: function(key)
   {
     return this._properties[key];
@@ -66,6 +119,57 @@ var cbObservable = Class.create(
   __set: function(key, value)
   {
     this._properties[key] = value;
+  },
+
+  _getArray: function(key) 
+  {
+    return this._arrays[key];
+  },
+
+  getObjectsAtIndexes: function(key, indexes)
+  {
+    var observable = this;
+    return indexes.collect(function(index) 
+    {
+      return observable._arrays[key][index];
+    });
+  },
+
+  insertObjectsAtIndexes: function(key, objects, indexes)
+  {
+    var observable = this;
+    indexes.zip(objects, function(tuple) 
+    {
+      observable._arrays[key].splice(tuple[0], 0, tuple[1]);
+    });
+  },
+  
+  insertObjects: function(key, objects)
+  {
+    var observable = this;
+    objects.each(function(obj) 
+    {
+      observable._arrays[key].push(obj);
+    });
+  },
+  
+  removeObjectsAtIndexes: function(key, indexes) 
+  {
+    var sorted_indexes = indexes.sort(function(a, b) 
+    {
+      return b-a;
+    });
+    
+    var observable = this;
+    sorted_indexes.each(function(index) 
+    {
+      observable._arrays[key].splice(index, 1);
+    });
+  },
+  
+  countObjects: function(key)
+  {
+    return this._arrays[key].length;
   },
 
   // ----------------------- KVC -----------------------
