@@ -36,85 +36,85 @@
 
 <script class="test-code" type="text/javascript">
 // <![CDATA[
-	console.log("Loaded cbObservable test");
-	
+  console.log("Loaded cbObservable test");
+  
   new Test.Unit.Runner({
     setup: function() { with (this) {
-			this.User = Class.create(cbObservable, 
-	    {
-	      initialize: function($super, username) 
-	      {
-	        $super();
-	        this.defineProperty('username');
-	        this.defineProperty('password');
-	        this.defineProperty('is_admin');
+      this.User = Class.create(cbObservable, 
+      {
+        initialize: function($super, username) 
+        {
+          $super();
+          this.defineProperty('username');
+          this.defineProperty('password');
+          this.defineProperty('is_admin');
 
-	        this.defineProperty('computer');
+          this.defineProperty('computer');
 
-	        this.defineArrayProperty('friends');
+          this.defineArrayProperty('friends');
 
-	        this.username = username;
-	      },
-	      getUsername: function()
-	      {
-	        return this._get('username')+' yao!';
-	      },
-	      setPassword: function(new_password)
-	      {
-	        //Hash the password using an awesome hashing function
-	        var hash = 0;
-	        for (var i = new_password.length - 1; i >= 0; i--){
-	          hash += new_password.charCodeAt(i);
-	        };
+          this.username = username;
+        },
+        getUsername: function()
+        {
+          return this._get('username')+' yao!';
+        },
+        setPassword: function(new_password)
+        {
+          //Hash the password using an awesome hashing function
+          var hash = 0;
+          for (var i = new_password.length - 1; i >= 0; i--){
+            hash += new_password.charCodeAt(i);
+          };
 
-	        this._set('password', hash);
-	      },
-	      isAdmin: function()
-	      {
-	        return !this._get('is_admin');
-	      }
-	    });
+          this._set('password', hash);
+        },
+        isAdmin: function()
+        {
+          return !this._get('is_admin');
+        }
+      });
 
-	    this.Computer = Class.create(cbObservable, 
-	    {
-	      initialize: function($super)
-	      {
-	        $super();
+      this.Computer = Class.create(cbObservable, 
+      {
+        initialize: function($super)
+        {
+          $super();
 
-	        this.defineProperty('maker');
-	        this.defineProperty('model');
-	      }
-	    });
+          this.defineProperty('maker');
+          this.defineProperty('model');
+        }
+      });
 
-	    this.Observer = Class.create(
-	    {
-	      initialize: function() 
-	      {
-	        this.reset();
-	      },
-	      observeValueForKeyPathOfObject: function(key_path, object, change, context)
-	      {
-	        this.last_observed_key_paths.push(key_path);
-	        this.last_observed_objects.push(object);
-	        this.last_observed_changes.push(change);
-	        this.last_observed_contexts.push(context);
-	      },
-	      reset: function ()
-	      {
-	        this.last_observed_key_paths = [];
-	        this.last_observed_objects = [];
-	        this.last_observed_changes = [];
-	        this.last_observed_contexts = [];
-	      },
-	      isEmpty: function()
-	      {
-	        return (this.last_observed_key_paths.length == 0 &&
-	                this.last_observed_objects.length == 0 &&
-	                this.last_observed_changes.length == 0 &&
-	                this.last_observed_contexts.length == 0);
-	      }
-	    });
-		}},
+      this.Observer = Class.create(
+      {
+        initialize: function() 
+        {
+          this.reset();
+        },
+        observeValueForKeyPathOfObject: function(key_path, object, change, context)
+        {
+          this.last_observed_key_paths.push(key_path);
+          this.last_observed_objects.push(object);
+          this.last_observed_changes.push(change);
+          this.last_observed_contexts.push(context);
+        },
+        reset: function ()
+        {
+          this.last_observed_key_paths = [];
+          this.last_observed_objects = [];
+          this.last_observed_changes = [];
+          this.last_observed_contexts = [];
+        },
+        isEmpty: function()
+        {
+          return (this.last_observed_key_paths.length == 0 &&
+                  this.last_observed_objects.length == 0 &&
+                  this.last_observed_changes.length == 0 &&
+                  this.last_observed_contexts.length == 0);
+        }
+      });
+    }},
     
     teardown: function() {
       
@@ -134,9 +134,9 @@
       assertEqual(user.password, 684);
     }},
     
-		// description of method
-		testKVC: function() { with(this) {
-			var user = new this.User('magnus');
+    // description of method
+    testKVC: function() { with(this) {
+      var user = new this.User('magnus');
       var imac = new this.Computer();
       imac.maker = 'Apple inc.';
       imac.model = 'iMac (Late 2007)';
@@ -182,11 +182,11 @@
       assertEqual(user.objectInFriendsAtIndex(1), friend_2);
       assertEqual(user.countOfFriends(), 2);
       
-		}},
+    }},
 
-		// description of method
-		testNonRelationalSettingObservations: function() { with(this) {
-			var user = new this.User('magnus');
+    // description of method
+    testNonRelationalSettingObservations: function() { with(this) {
+      var user = new this.User('magnus');
       user.password = 'qwerty';
       
       var observer = new this.Observer();
@@ -243,11 +243,11 @@
       assertEqual(observer.last_observed_changes[1]['new'], 324);
       assertEqual(observer.last_observed_changes[1].old, 684);
       observer.reset();
-		}},
+    }},
 
-		// description of method
-		testArrayObservations: function() { with(this) {
-			var user = new this.User('magnus');
+    // description of method
+    testArrayObservations: function() { with(this) {
+      var user = new this.User('magnus');
 
       var friend_1 = new this.User('Friend 1');
       var friend_2 = new this.User('Friend 2');
@@ -305,9 +305,9 @@
       assertEqual(observer.last_observed_changes[0].indexes, [0]);
       observer.reset();
       
-		}},
+    }},
 
-		
+    
   }, {testLog: "testlog_cbObservable"}); 
   
 // ]]>

@@ -36,27 +36,27 @@
 
 <script class="test-code" type="text/javascript">
 // <![CDATA[
-	console.log("Loaded cbArrayExtensions test");
+  console.log("Loaded cbArrayExtensions test");
 
   new Test.Unit.Runner({
     setup: function() { with (this) {
-			this.Square = Class.create(cbObservable, 
-			{
-			  initialize: function($super, root)
-			  {
-			    $super();
+      this.Square = Class.create(cbObservable, 
+      {
+        initialize: function($super, root)
+        {
+          $super();
 
-			    this.defineProperty('root');
-			    this.root = root;
+          this.defineProperty('root');
+          this.root = root;
 
-			    this.__defineGetter__('square', this.getSquare);
-			  },
+          this.__defineGetter__('square', this.getSquare);
+        },
 
-			  getSquare: function()
-			  {
-			    return this.root*this.root;
-			  }
-			});
+        getSquare: function()
+        {
+          return this.root*this.root;
+        }
+      });
     }},
     
     teardown: function() {
@@ -64,39 +64,39 @@
     },
     
     testMiscTools: function() { with(this) {
-		  var obj = {test: true};
-		  var an_array = ['hello', obj, 12, true];
+      var obj = {test: true};
+      var an_array = ['hello', obj, 12, true];
 
-		  assert(an_array.has('hello'));
-		  assert(!an_array.has('test'));
-		  assert(an_array.has(obj));
-		  assert(!an_array.has({test: true}));
-		  assert(!an_array.has({test: true, other_stuff: false}));
-		  assert(an_array.has(12));
-		  assert(!an_array.has(13));
-		  assert(an_array.has(true));
-		  assert(!an_array.has(false));
+      assert(an_array.has('hello'));
+      assert(!an_array.has('test'));
+      assert(an_array.has(obj));
+      assert(!an_array.has({test: true}));
+      assert(!an_array.has({test: true, other_stuff: false}));
+      assert(an_array.has(12));
+      assert(!an_array.has(13));
+      assert(an_array.has(true));
+      assert(!an_array.has(false));
     }},
 
     testKVC: function() { with(this) {      
-		  var products = ['iMac', 'iPhone', 'Mac Mini', 'Mac Pro', 'MacBook', 'MacBook Pro', 'iPad'];
+      var products = ['iMac', 'iPhone', 'Mac Mini', 'Mac Pro', 'MacBook', 'MacBook Pro', 'iPad'];
 
-		  var primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41];
+      var primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41];
 
-		  var squares = [new this.Square(1), new this.Square(2), new this.Square(3), new this.Square(4)];
+      var squares = [new this.Square(1), new this.Square(2), new this.Square(3), new this.Square(4)];
 
-		  assertEqual(products.valueForKey('@count'), 7);
-		  assertEqual(primes.valueForKey('@avg'), 238/13, 0.1);
-		  assertEqual(primes.valueForKey('@max'), 41);
-		  assertEqual(primes.valueForKey('@min'), 2);
-		  assertEqual(primes.valueForKey('@sum'), 238);
+      assertEqual(products.valueForKey('@count'), 7);
+      assertEqual(primes.valueForKey('@avg'), 238/13, 0.1);
+      assertEqual(primes.valueForKey('@max'), 41);
+      assertEqual(primes.valueForKey('@min'), 2);
+      assertEqual(primes.valueForKey('@sum'), 238);
 
-		  assertEqual(squares.valueForKeyPath('@sum.square'), 30);
-		  assertEqual(squares.valueForKeyPath('@avg.square'), 30/4, 0.1);
-		  assertEqual(squares.valueForKeyPath('@max.square'), 16);
-		  assertEqual(squares.valueForKeyPath('@min.square'), 1);
+      assertEqual(squares.valueForKeyPath('@sum.square'), 30);
+      assertEqual(squares.valueForKeyPath('@avg.square'), 30/4, 0.1);
+      assertEqual(squares.valueForKeyPath('@max.square'), 16);
+      assertEqual(squares.valueForKeyPath('@min.square'), 1);
 
-		  assertEqual(squares.valueForKeyPath('self.self.@max.self.self.square'), 16);
+      assertEqual(squares.valueForKeyPath('self.self.@max.self.self.square'), 16);
     }},
     
   }, {testLog: "testlog_cbArrayExtensions"}); 

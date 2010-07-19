@@ -14,24 +14,24 @@
    var tests = ['testKeyParser.html', 'testArrayExtensions.html', 'testObservable.html'];
    
    tests.each(function(test_file) {
-		new Ajax.Request(test_file, {
-				asynchronous:false,
-				onSuccess: function(response)
-				{
-					var test = response.responseXML;
-					
-					$A(test.getElementsByClassName('library')).each(function(library) {
-						if ($$('script[src="'+$(library).readAttribute('src')+'"]').length == 0)
-						{
-							$('suite-head').appendChild(document.importNode(library));
-						}
-					});
-					
-					$('suite-body').insert(document.importNode(test.getElementsByClassName('content')[0], true));
-					
-					eval(test.getElementsByClassName('test-code')[0].innerHTML);
-				}
-			});
+    new Ajax.Request(test_file, {
+        asynchronous:false,
+        onSuccess: function(response)
+        {
+          var test = response.responseXML;
+          
+          $A(test.getElementsByClassName('library')).each(function(library) {
+            if ($$('script[src="'+$(library).readAttribute('src')+'"]').length == 0)
+            {
+              $('suite-head').appendChild(document.importNode(library));
+            }
+          });
+          
+          $('suite-body').insert(document.importNode(test.getElementsByClassName('content')[0], true));
+          
+          eval(test.getElementsByClassName('test-code')[0].innerHTML);
+        }
+      });
    });
 
  </script>
