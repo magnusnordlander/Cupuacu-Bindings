@@ -96,6 +96,16 @@ var cbObservable = Class.create(
       return this.removeObjectsAtIndexes(propertyName, indexes);
     };
     
+    this[camelize('replace_object_in_'+propertyName+'_at_index_with_object')] = function(index, object) 
+    {
+      return this.replaceObjectsAtIndexesWithObjects(propertyName, [index], [object]);
+    };
+    
+    this[camelize('replace_'+propertyName+'_at_indexes_with_'+propertyName)] = function(indexes, objects) 
+    {
+      return this.replaceObjectsAtIndexesWithObjects(propertyName, indexes, objects);
+    };
+    
     this[camelize('count_of_'+propertyName)] = function() 
     {
       return this.countObjects(propertyName);
@@ -164,6 +174,15 @@ var cbObservable = Class.create(
     sorted_indexes.each(function(index) 
     {
       observable._arrays[key].splice(index, 1);
+    });
+  },
+  
+  replaceObjectsAtIndexesWithObjects: function(key, indexes, objects)
+  {
+    var observable = this;
+    indexes.zip(objects, function(tuple) 
+    {
+      observable._arrays[key].splice(tuple[0], 1, tuple[1]);
     });
   },
   

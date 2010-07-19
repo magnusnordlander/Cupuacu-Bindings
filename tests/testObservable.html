@@ -1,239 +1,316 @@
-<html>
- <head>
-  <title>Test Page for Observable</title>
-  <script src="../vendor/jsunit/app/jsUnitCore.js" type="text/javascript" charset="utf-8"></script>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>JavaScript unit test file</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <script src="../vendor/JsUnitTest/jsunittest.js" type="text/javascript"></script>
+
   <script src="../vendor/prototype/dist/prototype.js" type="text/javascript" charset="utf-8"></script>
   <script src="../vendor/low-pro/dist/lowpro.js" type="text/javascript" charset="utf-8"></script>
+  
+  <script class="library" src="../src/cbKeyPathParser.js" type="text/javascript" charset="utf-8"></script>
+  <script class="library" src="../src/cbArrayExtensions.js" type="text/javascript" charset="utf-8"></script>
+  <script class="library" src="../src/cbObservable.js" type="text/javascript" charset="utf-8"></script>
+  
+  <link rel="stylesheet" href="../vendor/JsUnitTest/unittest.css" type="text/css" />
+</head>
+<body>
 
-  <script src="../src/cbKeyPathParser.js" type="text/javascript" charset="utf-8"></script>  
-  <script src="../src/cbArrayExtensions.js" type="text/javascript" charset="utf-8"></script>
-  <script src="../src/cbObservable.js" type="text/javascript" charset="utf-8"></script>
- </head>
- <body>
-  <script language="javascript">
-    var User = Class.create(cbObservable, 
-    {
-      initialize: function($super, username) 
-      {
-        $super();
-        this.defineProperty('username');
-        this.defineProperty('password');
-        this.defineProperty('is_admin');
-        
-        this.defineProperty('computer');
-        
-        this.defineArrayProperty('friends');
+<div class="content">
 
-        this.username = username;
-      },
-      getUsername: function()
-      {
-        return this._get('username')+' yao!';
-      },
-      setPassword: function(new_password)
-      {
-        //Hash the password using an awesome hashing function
-        var hash = 0;
-        for (var i = new_password.length - 1; i >= 0; i--){
-          hash += new_password.charCodeAt(i);
-        };
-        
-        this._set('password', hash);
-      },
-      isAdmin: function()
-      {
-        return !this._get('is_admin');
-      }
-    });
+  <div class="header">
+    <h1>JavaScript unit test file</h1>
+    <p>
+      This file tests <strong>cbObservable.js</strong>.
+    </p>
+  </div>
 
-    var Computer = Class.create(cbObservable, 
-    {
-      initialize: function($super)
-      {
-        $super();
-        
-        this.defineProperty('maker');
-        this.defineProperty('model');
-      }
-    });
+  <!-- Log output (one per Runner, via {testLog: "testlog"} option)-->
+  <div id="testlog_cbObservable"></div>
+  
+  <!-- Put sample/test html here -->
+  <div class="sample">
+  </div>
+</div>
 
-    var Observer = Class.create(
-    {
-      initialize: function() 
-      {
-        this.reset();
-      },
-      observeValueForKeyPathOfObject: function(key_path, object, change, context)
-      {
-        this.last_observed_key_paths.push(key_path);
-        this.last_observed_objects.push(object);
-        this.last_observed_changes.push(change);
-        this.last_observed_contexts.push(context);
-      },
-      reset: function ()
-      {
-        this.last_observed_key_paths = [];
-        this.last_observed_objects = [];
-        this.last_observed_changes = [];
-        this.last_observed_contexts = [];
-      },
-      isEmpty: function()
-      {
-        return (this.last_observed_key_paths.length == 0 &&
-                this.last_observed_objects.length == 0 &&
-                this.last_observed_changes.length == 0 &&
-                this.last_observed_contexts.length == 0);
-      }
-    });
+<script class="test-code" type="text/javascript">
+// <![CDATA[
+	console.log("Loaded cbObservable test");
+	
+  new Test.Unit.Runner({
+    setup: function() { with (this) {
+			this.User = Class.create(cbObservable, 
+	    {
+	      initialize: function($super, username) 
+	      {
+	        $super();
+	        this.defineProperty('username');
+	        this.defineProperty('password');
+	        this.defineProperty('is_admin');
 
-    function testProperties() 
-    {
-      var user = new User('magnus');
-      assertEquals(user._get('username'), 'magnus');
-      assertEquals(user.username, 'magnus yao!');
+	        this.defineProperty('computer');
+
+	        this.defineArrayProperty('friends');
+
+	        this.username = username;
+	      },
+	      getUsername: function()
+	      {
+	        return this._get('username')+' yao!';
+	      },
+	      setPassword: function(new_password)
+	      {
+	        //Hash the password using an awesome hashing function
+	        var hash = 0;
+	        for (var i = new_password.length - 1; i >= 0; i--){
+	          hash += new_password.charCodeAt(i);
+	        };
+
+	        this._set('password', hash);
+	      },
+	      isAdmin: function()
+	      {
+	        return !this._get('is_admin');
+	      }
+	    });
+
+	    this.Computer = Class.create(cbObservable, 
+	    {
+	      initialize: function($super)
+	      {
+	        $super();
+
+	        this.defineProperty('maker');
+	        this.defineProperty('model');
+	      }
+	    });
+
+	    this.Observer = Class.create(
+	    {
+	      initialize: function() 
+	      {
+	        this.reset();
+	      },
+	      observeValueForKeyPathOfObject: function(key_path, object, change, context)
+	      {
+	        this.last_observed_key_paths.push(key_path);
+	        this.last_observed_objects.push(object);
+	        this.last_observed_changes.push(change);
+	        this.last_observed_contexts.push(context);
+	      },
+	      reset: function ()
+	      {
+	        this.last_observed_key_paths = [];
+	        this.last_observed_objects = [];
+	        this.last_observed_changes = [];
+	        this.last_observed_contexts = [];
+	      },
+	      isEmpty: function()
+	      {
+	        return (this.last_observed_key_paths.length == 0 &&
+	                this.last_observed_objects.length == 0 &&
+	                this.last_observed_changes.length == 0 &&
+	                this.last_observed_contexts.length == 0);
+	      }
+	    });
+		}},
+    
+    teardown: function() {
+      
+    },
+    
+    testProperties: function() { with(this) {
+      var user = new this.User('magnus');
+      assertEqual(user._get('username'), 'magnus');
+      assertEqual(user.username, 'magnus yao!');
       user.username = 'mignis';
-      assertEquals(user.username, 'mignis yao!');
+      assertEqual(user.username, 'mignis yao!');
       
       user.is_admin = true;
-      assertFalse(user.is_admin);
+      assert(!user.is_admin);
       
       user.password = 'qwerty';
-      assertEquals(user.password, 684);
-    }
-
-    function testKeyValueCoding () 
-    {
-      var user = new User('magnus');
-      var imac = new Computer();
+      assertEqual(user.password, 684);
+    }},
+    
+		// description of method
+		testKVC: function() { with(this) {
+			var user = new this.User('magnus');
+      var imac = new this.Computer();
       imac.maker = 'Apple inc.';
       imac.model = 'iMac (Late 2007)';
       
       user.computer = imac;
       
-      assertEquals(user.valueForKey('username'), 'magnus yao!');
-      assertEquals(user.valueForKeyPath('computer.model'), 'iMac (Late 2007)');
+      assertEqual(user.valueForKey('username'), 'magnus yao!');
+      assertEqual(user.valueForKeyPath('computer.model'), 'iMac (Late 2007)');
       
       user.setValueForKey('password', 'qwerty');
       user.setValueForKeyPath('computer.model', 'iMac (Early 2010)');
       
-      assertEquals(user.valueForKey('password'), 684);
-      assertEquals(user.valueForKeyPath('computer.model'), 'iMac (Early 2010)');
-      assertEquals(user.valueForKeyPath('self.self.computer.self.model'), 'iMac (Early 2010)');
+      assertEqual(user.valueForKey('password'), 684);
+      assertEqual(user.valueForKeyPath('computer.model'), 'iMac (Early 2010)');
+      assertEqual(user.valueForKeyPath('self.self.computer.self.model'), 'iMac (Early 2010)');
       
-      var friend_1 = new User('Friend 1');
-      var friend_2 = new User('Friend 2');
-      var friend_3 = new User('Friend 3');
+      var friend_1 = new this.User('Friend 1');
+      var friend_2 = new this.User('Friend 2');
+      var friend_3 = new this.User('Friend 3');
       
       user.insertObjectInFriendsAtIndex(friend_1, 0);
       user.insertFriendsAtIndexes([friend_2, friend_3], [1, 2]);
       
-      assertEquals(user.countOfFriends(), 3);
-      assertEquals(user.objectInFriendsAtIndex(0), friend_1);
-      assertArrayEquals(user.friendsAtIndexes([1,2]), [friend_2, friend_3]);
+      assertEqual(user.countOfFriends(), 3);
+      assertEqual(user.objectInFriendsAtIndex(0), friend_1);
+      assertEqual(user.friendsAtIndexes([1,2]), [friend_2, friend_3]);
       
       user.removeObjectFromFriendsAtIndex(0);
-      assertEquals(user.countOfFriends(), 2);
+      assertEqual(user.countOfFriends(), 2);
       user.removeFriendsAtIndexes([0, 1]);
-      assertEquals(user.countOfFriends(), 0);
+      assertEqual(user.countOfFriends(), 0);
       
       user.addFriends([friend_2, friend_3]);
-      assertEquals(user.objectInFriendsAtIndex(0), friend_2);
-      assertEquals(user.objectInFriendsAtIndex(1), friend_3);
-    }
+      assertEqual(user.objectInFriendsAtIndex(0), friend_2);
+      assertEqual(user.objectInFriendsAtIndex(1), friend_3);
+      
+      user.replaceObjectInFriendsAtIndexWithObject(0, friend_1);
+      assertEqual(user.objectInFriendsAtIndex(0), friend_1);
+      assertEqual(user.countOfFriends(), 2);
+      
+      user.replaceFriendsAtIndexesWithFriends([0, 1], [friend_3, friend_2]);
+      assertEqual(user.objectInFriendsAtIndex(0), friend_3);
+      assertEqual(user.objectInFriendsAtIndex(1), friend_2);
+      assertEqual(user.countOfFriends(), 2);
+      
+		}},
 
-    function testNonRelationalSettingObservations () 
-    {
-      var user = new User('magnus');
+		// description of method
+		testNonRelationalSettingObservations: function() { with(this) {
+			var user = new this.User('magnus');
       user.password = 'qwerty';
       
-      var observer = new Observer();
-      var observer_2 = new Observer();
+      var observer = new this.Observer();
+      var observer_2 = new this.Observer();
       
       user.addObserverForKeyPath(observer, 'username', ['new', 'initial'], {test: 'foo'});
       user.addObserverForKeyPath(observer_2, 'username');
 
-      assertEquals(observer.last_observed_objects[0], user);
-      assertEquals(observer.last_observed_key_paths[0], 'username');
-      assertEquals(observer.last_observed_changes[0].kind, 'setting')
-      assertFalse(observer.last_observed_changes[0].notification_is_prior);
-      assertEquals(observer.last_observed_changes[0]['new'], 'magnus yao!');
-      assertEquals(observer.last_observed_changes[0].old, undefined);
-      assertEquals(observer.last_observed_contexts[0].test, 'foo');
+      assertEqual(observer.last_observed_objects[0], user);
+      assertEqual(observer.last_observed_key_paths[0], 'username');
+      assertEqual(observer.last_observed_changes[0].kind, 'setting')
+      assert(!observer.last_observed_changes[0].notification_is_prior);
+      assertEqual(observer.last_observed_changes[0]['new'], 'magnus yao!');
+      assertEqual(observer.last_observed_changes[0].old, undefined);
+      assertEqual(observer.last_observed_contexts[0].test, 'foo');
       observer.reset();
 
-      assertTrue(observer_2.isEmpty());
+      assert(observer_2.isEmpty());
       
       user.username = 'foo';
-      assertEquals(observer.last_observed_objects[0], user);
-      assertEquals(observer.last_observed_key_paths[0], 'username');
-      assertEquals(observer.last_observed_changes[0].kind, 'setting')
-      assertFalse(observer.last_observed_changes[0].notification_is_prior);
-      assertEquals(observer.last_observed_changes[0]['new'], 'foo yao!');
-      assertEquals(observer.last_observed_changes[0].old, undefined);
-      assertEquals(observer.last_observed_contexts[0].test, 'foo');
+      assertEqual(observer.last_observed_objects[0], user);
+      assertEqual(observer.last_observed_key_paths[0], 'username');
+      assertEqual(observer.last_observed_changes[0].kind, 'setting')
+      assert(!observer.last_observed_changes[0].notification_is_prior);
+      assertEqual(observer.last_observed_changes[0]['new'], 'foo yao!');
+      assertEqual(observer.last_observed_changes[0].old, undefined);
+      assertEqual(observer.last_observed_contexts[0].test, 'foo');
       observer.reset();
       
-      assertEquals(observer_2.last_observed_objects[0], user);
-      assertEquals(observer_2.last_observed_key_paths[0], 'username');
-      assertEquals(observer_2.last_observed_changes[0].kind, 'setting')
-      assertFalse(observer_2.last_observed_changes[0].notification_is_prior);
-      assertEquals(observer_2.last_observed_changes[0]['new'], undefined);
-      assertEquals(observer_2.last_observed_changes[0].old, undefined);
-      assertEquals(observer_2.last_observed_contexts[0], undefined);
+      assertEqual(observer_2.last_observed_objects[0], user);
+      assertEqual(observer_2.last_observed_key_paths[0], 'username');
+      assertEqual(observer_2.last_observed_changes[0].kind, 'setting')
+      assert(!observer_2.last_observed_changes[0].notification_is_prior);
+      assertEqual(observer_2.last_observed_changes[0]['new'], undefined);
+      assertEqual(observer_2.last_observed_changes[0].old, undefined);
+      assertEqual(observer_2.last_observed_contexts[0], undefined);
       observer_2.reset();
       
       user.addObserverForKeyPath(observer, 'password', ['new', 'old', 'prior']);
 
       user.password = 'foo'; //324
 
-      assertEquals(observer.last_observed_objects[0], user);
-      assertEquals(observer.last_observed_key_paths[0], 'password');
-      assertEquals(observer.last_observed_changes[0].kind, 'setting')
-      assertTrue(observer.last_observed_changes[0].notification_is_prior);
-      assertEquals(observer.last_observed_changes[0]['new'], undefined);
-      assertEquals(observer.last_observed_changes[0].old, 684);
+      assertEqual(observer.last_observed_objects[0], user);
+      assertEqual(observer.last_observed_key_paths[0], 'password');
+      assertEqual(observer.last_observed_changes[0].kind, 'setting')
+      assert(observer.last_observed_changes[0].notification_is_prior);
+      assertEqual(observer.last_observed_changes[0]['new'], undefined);
+      assertEqual(observer.last_observed_changes[0].old, 684);
       
-      assertEquals(observer.last_observed_objects[1], user);
-      assertEquals(observer.last_observed_key_paths[1], 'password');
-      assertEquals(observer.last_observed_changes[1].kind, 'setting')
-      assertFalse(observer.last_observed_changes[1].notification_is_prior);
-      assertEquals(observer.last_observed_changes[1]['new'], 324);
-      assertEquals(observer.last_observed_changes[1].old, 684);
+      assertEqual(observer.last_observed_objects[1], user);
+      assertEqual(observer.last_observed_key_paths[1], 'password');
+      assertEqual(observer.last_observed_changes[1].kind, 'setting')
+      assert(!observer.last_observed_changes[1].notification_is_prior);
+      assertEqual(observer.last_observed_changes[1]['new'], 324);
+      assertEqual(observer.last_observed_changes[1].old, 684);
+      observer.reset();
+		}},
+
+		// description of method
+		testArrayObservations: function() { with(this) {
+			var user = new this.User('magnus');
+
+      var friend_1 = new this.User('Friend 1');
+      var friend_2 = new this.User('Friend 2');
+      var friend_3 = new this.User('Friend 3');
+      
+      user.addFriends([friend_1]);
+      
+      var observer = new this.Observer();
+      
+      user.addObserverForKeyPath(observer, 'friends', ['new', 'old', 'initial'], {test: 'foo'});
+      
+      assertEqual(observer.last_observed_objects[0], user);
+      assertEqual(observer.last_observed_key_paths[0], 'friends');
+      assertEqual(observer.last_observed_changes[0].kind, 'insertion')
+      assert(!observer.last_observed_changes[0].notification_is_prior);
+      assertEqual(observer.last_observed_changes[0]['new'], [friend_1]);
+      assertEqual(observer.last_observed_changes[0].old, undefined);
+      assertEqual(observer.last_observed_contexts[0].test, 'foo');
+      assertEqual(observer.last_observed_changes[0].indexes, [0]);
       observer.reset();
       
-//      user.password = 'bar'; //309
+      user.addFriends([friend_2, friend_3]);
       
-/*      imac.model = 'iMac (Early 2010)';
-      assertEquals(observer.last_observed_object, user);
-      assertEquals(observer.last_observed_key_path, 'computer.model');*/
+      assertEqual(observer.last_observed_objects[0], user);
+      assertEqual(observer.last_observed_key_paths[0], 'friends');
+      assertEqual(observer.last_observed_changes[0].kind, 'insertion')
+      assert(!observer.last_observed_changes[0].notification_is_prior);
+      assertEqual(observer.last_observed_changes[0]['new'], [friend_2, friend_3]);
+      assertEqual(observer.last_observed_changes[0].old, undefined);
+      assertEqual(observer.last_observed_contexts[0].test, 'foo');
+      assertEqual(observer.last_observed_changes[0].indexes, [1, 2]);
+      observer.reset();
       
-/*       var imac = new Computer();
-      imac.maker = 'Apple inc.';
-      imac.model = 'iMac (Late 2007)';
+      user.removeFriendsAtIndexes([0, 2]);
       
-      user.computer = imac; */
+      assertEqual(observer.last_observed_objects[0], user);
+      assertEqual(observer.last_observed_key_paths[0], 'friends');
+      assertEqual(observer.last_observed_changes[0].kind, 'removal')
+      assert(!observer.last_observed_changes[0].notification_is_prior);
+      assertEqual(observer.last_observed_changes[0]['new'], undefined);
+      assertEqual(observer.last_observed_changes[0].old, [friend_1, friend_3]);
+      assertEqual(observer.last_observed_contexts[0].test, 'foo');
+      assertEqual(observer.last_observed_changes[0].indexes, [0, 2]);
+      observer.reset();
       
-    }
-    
-    function testNonRelationalArrayObservations () 
-    {
-      var user = new User('magnus');
+      user.replaceObjectInFriendsAtIndexWithObject(0, friend_3);
+      
+      assertEqual(observer.last_observed_objects[0], user);
+      assertEqual(observer.last_observed_key_paths[0], 'friends');
+      assertEqual(observer.last_observed_changes[0].kind, 'replacement')
+      assert(!observer.last_observed_changes[0].notification_is_prior);
+      assertEqual(observer.last_observed_changes[0]['new'], [friend_3]);
+      assertEqual(observer.last_observed_changes[0].old, [friend_2]);
+      assertEqual(observer.last_observed_contexts[0].test, 'foo');
+      assertEqual(observer.last_observed_changes[0].indexes, [0]);
+      observer.reset();
+      
+		}},
 
-      var friend_1 = new User('Friend 1');
-      var friend_2 = new User('Friend 2');
-      var friend_3 = new User('Friend 3');
-      
-      user.friends.push(friend_1);
-      
-      var observer = new Observer();
-      
-      
-    }
-    
-
-    testProperties();
-    testNonRelationalSettingObservations();
-    testKeyValueCoding();
-  </script>
- </body>
+		
+  }, {testLog: "testlog_cbObservable"}); 
+  
+// ]]>
+</script>
+</body>
 </html>
